@@ -591,7 +591,7 @@ public class RAMCloud {
             e.printStackTrace();
             System.exit(1);
         }
-        cppSetLogFile(byteBufferPointer);
+        cppSetLogFile(cppByteBufferPointer);
         byteBuffer.rewind();
         checkStatus(byteBuffer.getInt());
     }
