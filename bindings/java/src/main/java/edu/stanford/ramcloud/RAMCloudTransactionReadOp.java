@@ -112,6 +112,10 @@ public class RAMCloudTransactionReadOp {
       this(ramcloudTx, tableId, key.getBytes(), batch);
     }
 
+    public void close() {
+        finalize();
+    }
+
     /**
      * This method is called by the garbage collector before destroying the
      * object. 
