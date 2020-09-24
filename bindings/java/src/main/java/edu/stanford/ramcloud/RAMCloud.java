@@ -157,8 +157,10 @@ public class RAMCloud {
      *            resources. This is typically the same as the value of the
      *            "--clusterName" command-line option given to the coordinator
      *            when it started.
+     * @param dpdkPort
+     *            DPDK port to use, if enabled.
      */
-    public RAMCloud(String locator, String clusterName, String logFile) {
+    public RAMCloud(String locator, String clusterName, int dpdkPort) {
         byteBuffer = ByteBuffer.allocateDirect(bufferCapacity);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         cppByteBufferPointer = cppGetByteBufferPointer(byteBuffer);
@@ -170,8 +172,10 @@ public class RAMCloud {
         byteBuffer.putInt(locator.length())
                 .put(locator.getBytes())
                 .put((byte) 0)
+                .putInt(clusterName.length())
                 .put(clusterName.getBytes())
-                .put((byte) 0);
+                .put((byte) 0)
+                .putInt(dpdkPort);
         cppConnect(cppByteBufferPointer);
         byteBuffer.rewind();
         checkStatus(byteBuffer.getInt());
@@ -185,7 +189,7 @@ public class RAMCloud {
      * @see #RAMCloud(String, String)
      */
     public RAMCloud(String locator) {
-        this(locator, "main", null);
+        this(locator, "main", -1);
     }
 
     /**
@@ -276,6 +280,13 @@ public class RAMCloud {
         cppRead(cppByteBufferPointer);
         byteBuffer.rewind();
         ClientException.checkStatus(byteBuffer.getInt());
+        
+        boolean exists = (byteBuffer.getInt() == 1);
+
+        if (!exists) {
+          return null;
+        }
+
         long version = byteBuffer.getLong();
         int valueLength = byteBuffer.getInt();
         byte[] value = new byte[valueLength];
