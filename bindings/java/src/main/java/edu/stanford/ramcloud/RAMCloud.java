@@ -164,10 +164,6 @@ public class RAMCloud {
         byteBuffer = ByteBuffer.allocateDirect(bufferCapacity);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         cppByteBufferPointer = cppGetByteBufferPointer(byteBuffer);
-        // Set the log file
-        if (logFile != null) {
-            setLogFile(logFile);
-        }
         byteBuffer.rewind();
         byteBuffer.putInt(locator.length())
                 .put(locator.getBytes())
