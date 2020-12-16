@@ -277,11 +277,14 @@ public class RAMCloud {
         byteBuffer.rewind();
         ClientException.checkStatus(byteBuffer.getInt());
         
+        // Commenting the below code to resolve read issues. - Arun
+        /*
         boolean exists = (byteBuffer.getInt() == 1);
 
         if (!exists) {
           return null;
         }
+        */
 
         long version = byteBuffer.getLong();
         int valueLength = byteBuffer.getInt();
