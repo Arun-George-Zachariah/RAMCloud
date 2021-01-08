@@ -191,31 +191,10 @@ LIBS += -libverbs
 endif
 
 # DPDK definitions:
-#
-# Uncomment the variable definition below (or specify DPDK=yes on the make
-# command line, or set the variable in MakefragPrivateTop) to build RAMCloud
-# with a DPDK driver for BasicTransport. You may also need to modify other
-# variables below.
-# To compile the DPDK library:
-# * Download the desired version (RAMCloud currently works with versions
-#   2.0 and higher).
-# * Invoke "make install T=x86_64-native-linuxapp-gcc" in the top-level
-#   directory.
-# * Change to the directory "x86_64-native-linuxapp-gcc".
-# * Edit the file ".config" in that directory to change the value of the
-#   CONFIG_RTE_BUILD_SHARED_LIB variable to "y" (you can also leave it
-#   "n" to build without shared libraries, in which case you will need to
-#   modify other variables below here).
-# * Then recompile: "make clean; make"
-# DPDK ?= yes
+DPDK_DIR ?= scripts/dpdk
+DPDK = $(shell if [ -d $(DPDK_DIR) ]; then echo "yes"; else echo "no"; fi)
 ifeq ($(DPDK),yes)
 
-# Uncomment the line below and modify its value (or set the value in
-# MakefragPrivateTop) to hold the path to the top-level DPDK directory
-# (the parent of the "x86_64-native-linuxapp-gcc" directory). Or, leave
-# this variable undefined if DPDK is installed in the standard system
-# locations.
-# DPDK_DIR ?= dpdk
 
 # Change the definition below if you compiled DPDK without shared libraries.
 # Note: this configuration is not well tested and may not work.

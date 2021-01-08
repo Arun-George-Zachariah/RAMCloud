@@ -104,8 +104,14 @@ string vformat(const char* format, va_list ap)
 #define expect_true(expr)   __builtin_expect((expr), true)
 #define expect_false(expr)   __builtin_expect((expr), false)
 
+
+#ifndef likely
 #define likely(x) __builtin_expect((x), 1)
+#endif
+
+#ifndef unlikely
 #define unlikely(x) __builtin_expect((x), 0)
+#endif
 
 /**
  * Return the size of the given type as a uint32_t. This convenience macro
