@@ -10,6 +10,13 @@ DPDK_OPTIONS="CONFIG_RTE_BUILD_COMBINE_LIBS=y"
 # with DPDK shared libraries on the CloudLab m510 cluster.
 DPDK_OPTIONS+=" CONFIG_RTE_BUILD_SHARED_LIB=n"
 
+# Increasing the memory 
+# ( Done due to the error: 
+# Current CONFIG_RTE_MAX_MEMSEG=256 is not enough
+# Please either increase it or request less amount of memory.
+# )
+DPDK_OPTIONS+=" CONFIG_RTE_MAX_MEMSEG=1024"
+
 if [ "$MLNX_DPDK" != "y" ];
 then
     # Use DPDK community release.
