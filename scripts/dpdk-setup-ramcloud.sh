@@ -488,14 +488,17 @@ unbind_devices()
 QUIT=0
 
 #
-# Creates hugepages while setting up RAMCloud.
+# Setting up hugepages while installing up RAMCloud.
 #
 set_ramcloud_numa_pages()
 {
 	clear_huge_pages
 
-	echo "echo 1024 > /sys/kernel/mm/hugepages/hugepages-${HUGEPGSZ}/nr_hugepages" > .echo_tmp
-
+	echo > .echo_tmp
+	for d in /sys/devices/system/node/node? ; do
+		node=$(basename $d)
+		echo "echo 1024 > $d/hugepages/hugepages-${HUGEPGSZ}/nr_hugepages" >> .echo_tmp
+	done
 	echo "Reserving hugepages"
 	sudo sh .echo_tmp
 	rm -f .echo_tmp
