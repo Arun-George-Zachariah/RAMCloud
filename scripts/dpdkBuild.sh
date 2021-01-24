@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# usage: ./dpdkBuild.sh <IS_MELLANOX>
+# eg: ./dpdkBuild.sh y
+
 # Utility script that automates the process of fetching a stable dpdk release,
 # configuring its compilation options, and building the dpdk libraries.
 
@@ -9,6 +12,8 @@ DPDK_OPTIONS="CONFIG_RTE_BUILD_COMBINE_LIBS=y"
 # For example, as of 04/2018, we haven't been able to get MLX4 driver to work
 # with DPDK shared libraries on the CloudLab m510 cluster.
 DPDK_OPTIONS+=" CONFIG_RTE_BUILD_SHARED_LIB=n"
+
+MLNX_DPDK=$1
 
 if [ "$MLNX_DPDK" != "y" ];
 then
